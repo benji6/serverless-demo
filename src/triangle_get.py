@@ -12,5 +12,7 @@ def pascals_triangle():
 
 def handler(event, context):
   rows = int(event['rows'] or default_rows)
+  if (rows > max_rows):
+    print('max_rows exceeded, user requested ', rows, ' rows')
   clamped_rows = min(max(rows, 0), max_rows)
   return list(islice(pascals_triangle(), clamped_rows))
