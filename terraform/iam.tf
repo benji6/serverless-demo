@@ -14,7 +14,29 @@ resource "aws_iam_role" "lambda_exec" {
 }
 EOF
 
-  name = "lambda_exec_pascals_triangle"
+  name = "lambda_exec_demo"
+}
+
+resource "aws_iam_policy" "lambda_policy" {
+  name = "lambda_policy_demo"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "dynamodb:*",
+      "Effect": "Allow",
+      "Resource": "${aws_dynamodb_table.comments.arn}"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  policy_arn = "${aws_iam_policy.lambda_policy.arn}"
+  role       = "${aws_iam_role.lambda_exec.name}"
 }
 
 resource "aws_iam_role_policy_attachment" "aws_lambda_basic_execution_role_attachment" {
